@@ -1,8 +1,8 @@
 {
   "titre": "La Course GLORIUS",
   "saison": {
-    "debut": "2026-11-01",
-    "fin": "2027-10-31",
+    "debutAnnuel": "11-01",
+    "premiereSaison": "2026-11-01",
     "objectifCompagnie": 3000000
   },
   "afficherObjectifCompagniePourTous": false,

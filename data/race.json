@@ -1,10 +1,12 @@
 {
   "demo": false,
   "titre": "La Course GLORIUS",
-  "misAJour": "2026-10-26T20:31:00.180Z",
+  "misAJour": "2026-10-26T20:33:34.616Z",
   "saison": {
     "debut": "2026-11-01",
     "fin": "2027-10-31",
+    "terminee": false,
+    "prochaineCourse": null,
     "semaine": 0,
     "semainesTotal": 53,
     "derniereSemaine": null

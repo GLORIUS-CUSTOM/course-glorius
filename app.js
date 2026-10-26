@@ -58,9 +58,14 @@
   // ---------- tableau des faits ----------
   function renderTote() {
     const s = race.saison, f = race.faits;
-    $('#t-semaine').textContent = s.semaine ? `${s.semaine} / ${s.semainesTotal}` : 'Départ';
-    $('#t-semaine-sub').textContent = s.derniereSemaine
-      ? `Semaine du ${dateFr(s.derniereSemaine)}` : `La course part le ${dateFr(s.debut)}`;
+    if (s.terminee) {
+      $('#t-semaine').textContent = 'Arrivée';
+      $('#t-semaine-sub').textContent = `Résultat final. Nouvelle course le ${dateFr(s.prochaineCourse)}`;
+    } else {
+      $('#t-semaine').textContent = s.semaine ? `${s.semaine} / ${s.semainesTotal}` : 'Départ';
+      $('#t-semaine-sub').textContent = s.derniereSemaine
+        ? `Semaine du ${dateFr(s.derniereSemaine)}` : `La course part le ${dateFr(s.debut)}`;
+    }
 
     const fill = (sel, id, sub) => {
       const box = $(sel); box.replaceChildren();

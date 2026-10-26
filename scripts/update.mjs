@@ -27,7 +27,24 @@ const addDays = (s, n) => { const d = parse(s); d.setUTCDate(d.getUTCDate() + n)
 const mondayOf = (s) => { const d = parse(s); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return iso(d); };
 const todayToronto = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).format(new Date());
 
-const { debut, fin, objectifCompagnie } = cfg.saison;
+// La saison repart à zéro chaque année à la date « debutAnnuel » (MM-JJ, début de l'exercice).
+// DATE_COURSE (AAAA-MM-JJ) permet de simuler une autre date.
+const { objectifCompagnie } = cfg.saison;
+const debutAnnuel = cfg.saison.debutAnnuel || '11-01';
+const refDate = process.env.DATE_COURSE || (DEMO ? '2027-01-25' : todayToronto());
+const seasonOf = (d) => {
+  const yy = Number(d.slice(0, 4));
+  const deb = d >= `${yy}-${debutAnnuel}` ? `${yy}-${debutAnnuel}` : `${yy - 1}-${debutAnnuel}`;
+  return { debut: deb, fin: addDays(`${Number(deb.slice(0, 4)) + 1}-${debutAnnuel}`, -1) };
+};
+let { debut, fin } = seasonOf(refDate);
+// Tant que la première semaine de la nouvelle saison n'est pas terminée,
+// on garde affiché le résultat final de la saison précédente.
+let terminee = false;
+if (addDays(mondayOf(debut), 6) >= refDate) { ({ debut, fin } = seasonOf(addDays(debut, -1))); terminee = true; }
+// Avant la toute première saison, les animaux attendent à la barrière.
+const premiere = cfg.saison.premiereSaison;
+if (premiere && debut < premiere) { ({ debut, fin } = seasonOf(premiere)); terminee = false; }
 const allWeeks = [];
 for (let w = mondayOf(debut); w <= mondayOf(fin); w = addDays(w, 7)) allWeeks.push(w);
 
@@ -98,7 +115,7 @@ async function encrypt(code, salt, payload) {
 }
 
 // ---------- calcul ----------
-const today = DEMO ? addDays(allWeeks[11], 7) : todayToronto();
+const today = refDate;
 const done = allWeeks.filter((w) => addDays(w, 6) < today); // semaines terminées
 const k = done.length;
 
@@ -158,7 +175,7 @@ const race = {
   demo: DEMO,
   titre: cfg.titre,
   misAJour: new Date().toISOString(),
-  saison: { debut, fin, semaine: k, semainesTotal: allWeeks.length, derniereSemaine: k ? done[k - 1] : null },
+  saison: { debut, fin, terminee, prochaineCourse: terminee ? addDays(fin, 1) : null, semaine: k, semainesTotal: allWeeks.length, derniereSemaine: k ? done[k - 1] : null },
   compagniePct: cfg.afficherObjectifCompagniePourTous ? totalCompagnie / objectifCompagnie : null,
   faits: { meneur: now.leader, serieTete: serie, sprint, remontee, remonteeRangs: gain, photoFinish },
   vendeurs: cfg.vendeurs.map((v, i) => ({
