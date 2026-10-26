@@ -1,12 +1,16 @@
 // Génère un code d'accès pour chaque vendeur et deux codes admin.
-// Usage : node scripts/generate-codes.mjs
+// Usage : node scripts/generate-codes.mjs            (lettres et chiffres)
+//         node scripts/generate-codes.mjs --chiffres (10 chiffres seulement)
 // Copie le JSON affiché dans le secret GitHub CODES_ACCES, puis remets à chacun son code.
 import { readFile } from 'node:fs/promises';
 import { randomInt } from 'node:crypto';
 
 const cfg = JSON.parse(await readFile(new URL('../config.json', import.meta.url), 'utf8'));
 const alphabet = 'abcdefghjkmnpqrstuvwxyz23456789'; // sans 0/o, 1/l/i
-const code = () => Array.from({ length: 3 }, () =>
+const CHIFFRES = process.argv.includes('--chiffres');
+const code = () => CHIFFRES
+  ? (() => { const d = Array.from({ length: 10 }, () => randomInt(10)).join(''); return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`; })()
+  : Array.from({ length: 3 }, () =>
   Array.from({ length: 4 }, () => alphabet[randomInt(alphabet.length)]).join('')).join('-');
 
 const codes = Object.fromEntries(cfg.vendeurs.map((v) => [v.id, code()]));
