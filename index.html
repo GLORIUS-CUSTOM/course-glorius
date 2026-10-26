@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Course GLORIUS</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bulbs" id="bulbs" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="hero-photo" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <img class="logo" src="assets/logo-glorius.svg" alt="GLORIUS Custom">
+    <div class="hero-text">
+      <span class="eyebrow">Saison de ventes <span id="saison"></span></span>
+      <h1 id="titre">La Course GLORIUS</h1>
+      <span class="maj" id="maj"></span>
+      <span class="demo" id="demo" hidden>Données de démonstration</span>
+    </div>
+
+    <form class="unlock" id="unlock" autocomplete="off">
+      <label for="code">Ton code d’accès</label>
+      <div class="row">
+        <input type="text" id="code" placeholder="xxxx-xxxx-xxxx" spellcheck="false" autocapitalize="off" required>
+        <button class="btn" type="submit">Voir mes chiffres</button>
+      </div>
+      <label class="remember" for="remember"><input type="checkbox" id="remember" checked> Se souvenir sur cet appareil</label>
+      <span class="unlock-msg" id="unlock-msg" role="status"></span>
+    </form>
+
+    <div class="who" id="who" hidden>
+      <span class="eyebrow">Connecté</span>
+      <strong id="who-name"></strong>
+      <button class="link" id="logout" type="button">Verrouiller</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap main">
+
+  <section class="tote" aria-label="Tableau des courses">
+    <div class="cell"><span class="k">Semaine</span><span class="v" id="t-semaine"></span><span class="s" id="t-semaine-sub"></span></div>
+    <div class="cell"><span class="k">En tête</span><span class="v" id="t-meneur"></span><span class="s" id="t-meneur-sub"></span></div>
+    <div class="cell"><span class="k">Sprint de la semaine</span><span class="v" id="t-sprint"></span><span class="s" id="t-sprint-sub"></span></div>
+    <div class="cell"><span class="k">Plus forte remontée</span><span class="v" id="t-remontee"></span><span class="s" id="t-remontee-sub"></span></div>
+    <div class="cell" id="t-compagnie" hidden><span class="k">Objectif GLORIUS</span><span class="v" id="t-compagnie-val"></span><div class="bar"><span id="t-compagnie-bar"></span></div></div>
+  </section>
+  <p class="photo" id="photo-finish" hidden>Photo-finish en tête de course</p>
+
+  <section class="mine" id="mine" hidden aria-label="Mes chiffres">
+    <h2><span id="mine-token"></span>Mes chiffres</h2>
+    <div class="stats">
+      <div class="stat big"><span class="k">Ventes de la saison</span><span class="v" id="m-total"></span></div>
+      <div class="stat"><span class="k">Cette semaine</span><span class="v" id="m-semaine"></span></div>
+      <div class="stat"><span class="k">Meilleure semaine</span><span class="v" id="m-meilleure"></span></div>
+      <div class="stat"><span class="k">Moyenne / semaine</span><span class="v" id="m-moyenne"></span></div>
+      <div class="stat"><span class="k">Panier moyen</span><span class="v" id="m-panier"></span></div>
+      <div class="stat"><span class="k">Commandes</span><span class="v" id="m-commandes"></span></div>
+      <div class="stat"><span class="k">Position</span><span class="v" id="m-rang"></span></div>
+    </div>
+    <div class="mine-foot">
+      <div><span class="sub">Ventes par semaine, avant taxes</span><div id="m-spark"></div></div>
+      <div class="stat"><span class="k">Objectif personnel</span><span class="v" id="m-obj"></span><div class="bar"><span id="m-obj-bar"></span></div><span class="sub" id="m-obj-sub"></span></div>
+    </div>
+  </section>
+
+  <section class="admin" id="admin" hidden aria-label="Tous les chiffres">
+    <h2>Tous les chiffres</h2>
+    <div class="stats">
+      <div class="stat big"><span class="k">Ventes GLORIUS, saison</span><span class="v" id="a-total"></span></div>
+      <div class="stat"><span class="k">Vers l’objectif</span><span class="v" id="a-pct"></span><div class="bar"><span id="a-bar"></span></div></div>
+      <div class="stat"><span class="k">Projection fin de saison</span><span class="v" id="a-proj"></span></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Vendeur</th><th>Saison</th><th>Semaine</th><th>Meilleure</th><th>Moyenne</th><th>Commandes</th><th>Panier</th></tr></thead>
+        <tbody id="a-rows"></tbody>
+      </table>
+    </div>
+    <p class="sub" id="a-na" hidden>Ventes non reliées à un vendeur de la course : <span id="a-na-list"></span></p>
+  </section>
+
+  <section class="track-box" aria-label="La piste">
+    <div class="track-head">
+      <h2>La piste</h2>
+      <button class="link" id="replay" type="button">Rejouer la course</button>
+    </div>
+    <div class="bulbs track-bulbs" aria-hidden="true"></div>
+    <div class="track" id="track">
+      <div class="tape" id="tape" aria-hidden="true"></div>
+      <div class="months" id="ruler" aria-hidden="true"></div>
+      <div class="today-line" aria-hidden="true"><span class="today-label" id="today-label">Cette semaine</span></div>
+      <ol class="lanes" id="lanes"></ol>
+    </div>
+    <div class="bulbs track-bulbs track-bulbs-bottom" aria-hidden="true"></div>
+    <p class="legend">Le ruban est gradué en semaines de saison. Le cheval en tête court au rythme du calendrier ; les autres sont placés selon leurs ventes par rapport à lui. Les chevaux avancent chaque lundi, selon les ventes nettes avant taxes de la semaine terminée.</p>
+  </section>
+
+</main>
+<script src="sprites.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+name: Mise à jour de la course
+
+on:
+  schedule:
+    - cron: '17 10 * * 1'   # chaque lundi vers 6 h 17 (heure de l'Est), après la semaine terminée
+  workflow_dispatch: {}      # bouton « Run workflow » pour une mise à jour manuelle
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mise-a-jour
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lire Shopify et recalculer la course
+        env:
+          SHOPIFY_SHOP: ${{ secrets.SHOPIFY_SHOP }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          CODES_ACCES: ${{ secrets.CODES_ACCES }}
+        run: node scripts/update.mjs
+      - name: Publier les nouvelles positions
+        run: |
+          git config user.name "course-glorius"
+          git config user.email "course-glorius@users.noreply.github.com"
+          git add data/race.json data/vault.json
+          git commit -m "Course : mise à jour du $(date +%F)" || echo "Rien de nouveau"
+          git push

@@ -1,0 +1,83 @@
+{
+  "demo": false,
+  "titre": "La Course GLORIUS",
+  "misAJour": "2026-10-26T20:31:00.180Z",
+  "saison": {
+    "debut": "2026-11-01",
+    "fin": "2027-10-31",
+    "semaine": 0,
+    "semainesTotal": 53,
+    "derniereSemaine": null
+  },
+  "compagniePct": null,
+  "faits": {
+    "meneur": null,
+    "serieTete": 0,
+    "sprint": null,
+    "remontee": null,
+    "remonteeRangs": 0,
+    "photoFinish": false
+  },
+  "vendeurs": [
+    {
+      "id": "pat",
+      "nom": "Pat",
+      "icone": "icones/tortue.svg",
+      "animal": "tortue",
+      "couleur": "#3d6b52",
+      "couloir": 1,
+      "position": 0,
+      "positionPrec": 0,
+      "rang": null,
+      "rangPrec": null
+    },
+    {
+      "id": "vinny",
+      "nom": "Vinny",
+      "icone": "icones/elephant.svg",
+      "animal": "elephant",
+      "couleur": "#5d6876",
+      "couloir": 2,
+      "position": 0,
+      "positionPrec": 0,
+      "rang": null,
+      "rangPrec": null
+    },
+    {
+      "id": "alec",
+      "nom": "Alec",
+      "icone": "icones/paresseux.svg",
+      "animal": "paresseux",
+      "couleur": "#7a6248",
+      "couloir": 3,
+      "position": 0,
+      "positionPrec": 0,
+      "rang": null,
+      "rangPrec": null
+    },
+    {
+      "id": "jf",
+      "nom": "JF",
+      "icone": "icones/abeille.svg",
+      "animal": "abeille",
+      "couleur": "#b8902c",
+      "couloir": 4,
+      "position": 0,
+      "positionPrec": 0,
+      "rang": null,
+      "rangPrec": null
+    },
+    {
+      "id": "julie",
+      "nom": "Ju",
+      "icone": "icones/panda-roux.svg",
+      "animal": "pandaroux",
+      "couleur": "#a8482a",
+      "couloir": 5,
+      "position": 0,
+      "positionPrec": 0,
+      "rang": null,
+      "rangPrec": null
+    }
+  ]
+}
