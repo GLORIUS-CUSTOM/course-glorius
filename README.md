@@ -63,6 +63,9 @@ branche `main`, dossier `/ (root)`.
 **Actions → Mise à jour de la course → Run workflow**. Ensuite, elle tourne seule chaque lundi matin.
 
 ## Bon à savoir
+- **La course repart à zéro chaque 1er novembre** (début de l'exercice, réglé par `debutAnnuel`
+  dans `config.json`). Le résultat final reste affiché jusqu'à la fin de la première semaine
+  de la nouvelle saison, puis les animaux reviennent à la barrière.
 - La position d'un cheval est relative au meneur. Le meneur court au rythme du calendrier
   (à la moitié de la piste à mi-saison). Les autres sont placés selon leurs ventes comparées
   à celles du meneur. Les positions ne révèlent donc pas de montant en dollars.
