@@ -83,6 +83,17 @@ async function shopifyRows(sinceDate, untilDate) {
   return rows.map((row) => (Array.isArray(row) ? Object.fromEntries(cols.map((c, i) => [c, row[i]])) : row));
 }
 
+// ---------- test de connexion ----------
+if (process.env.TEST_SHOPIFY === 'true') {
+  const t = todayToronto();
+  const rows = await shopifyRows(addDays(t, -60), t);
+  const noms = {};
+  for (const r of rows) if (r.staff_member_name) noms[r.staff_member_name] = (noms[r.staff_member_name] || 0) + (Number(r.net_sales) || 0);
+  console.log('Connexion Shopify réussie. Noms POS vus dans les ventes des 60 derniers jours :');
+  for (const [n, v] of Object.entries(noms)) console.log(`  « ${n} » : ${v.toFixed(2)} $`);
+  process.exit(0);
+}
+
 // ---------- démo ----------
 function demoRows(weeks) {
   let seed = 7;
