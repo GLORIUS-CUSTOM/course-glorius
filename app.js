@@ -297,9 +297,9 @@
     });
     $('#logout').addEventListener('click', () => { unlocked = null; store.set('course-code', null); $('#code').value = ''; renderMine(); renderTrack(); });
     $('#replay').addEventListener('click', gallop);
-    // Lien personnel : …/#c=CODE. Le code est retenu sur l'appareil puis retiré de l'adresse.
+    // Lien personnel : …/#c=CODE. Le code est retenu sur l'appareil.
+    // Le code reste dans l'adresse pour que « Ajouter à l'écran d'accueil » l'emporte avec l'icône.
     const fromLink = (location.hash.match(/^#c=([0-9a-z]+)$/i) || [])[1];
-    if (fromLink) { try { history.replaceState(null, '', location.pathname + location.search); } catch {} }
     const saved = fromLink || store.get('course-code');
     if (saved) unlock(saved, true);
   }
