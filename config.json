@@ -8,7 +8,7 @@
   "afficherObjectifCompagniePourTous": false,
   "vendeurs": [
     { "id": "pat",   "nom": "Pat",       "nomsPOS": ["Patrick Feio"],                          "icone": "icones/tortue.svg", "animal": "tortue",     "couleur": "#3d6b52" },
-    { "id": "vinny", "nom": "Vinny",     "nomsPOS": [],                                        "icone": "icones/elephant.svg", "animal": "elephant",   "couleur": "#5d6876" },
+    { "id": "vinny", "nom": "Vinny",     "nomsPOS": ["vinny@glorius.ca User", "vinny@glorius.ca"], "icone": "icones/elephant.svg", "animal": "elephant",   "couleur": "#5d6876" },
     { "id": "alec",  "nom": "Alec",      "nomsPOS": ["a.vachon@glorius.ca User"],              "icone": "icones/paresseux.svg", "animal": "paresseux", "couleur": "#7a6248" },
     { "id": "jf",    "nom": "JF",        "nomsPOS": ["Jean-Francois Bedard"],                  "icone": "icones/abeille.svg", "animal": "abeille",    "couleur": "#b8902c" },
     { "id": "julie", "nom": "Ju",        "nomsPOS": ["Julie-Han Morin"],                       "icone": "icones/panda-roux.svg", "animal": "pandaroux", "couleur": "#a8482a" }
