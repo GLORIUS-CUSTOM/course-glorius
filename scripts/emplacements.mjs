@@ -72,6 +72,6 @@ for (let i = 0; i < todo.length; i += BATCH) {
     t.missing.map((l) => `{ locationId: "${l}", activate: true }`).join(', ')}]) { userErrors { message } }`).join('\n');
   const d = await gql(`mutation {\n${body}\n}`);
   for (const r of Object.values(d)) { if (r.userErrors?.length) { errors++; if (errors <= 5) console.log('  ', r.userErrors[0].message); } else done++; }
-  if ((i / BATCH) % 40 === 0) console.log(`  ${Math.min(i + BATCH, todo.length)} / ${todo.length}`);
+  if ((i / BATCH) % 200 === 0) console.log(`  ${Math.min(i + BATCH, todo.length)} / ${todo.length}`);
 }
 note(`Terminé : ${done} rattachées, ${errors} erreurs.`);
