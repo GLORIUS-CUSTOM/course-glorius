@@ -1,0 +1,28 @@
+name: Rattacher les produits aux emplacements
+
+on:
+  schedule:
+    - cron: '43 9 * * 1'    # chaque lundi, pour attraper les nouveaux produits
+  workflow_dispatch:
+    inputs:
+      simulation:
+        description: 'Simulation seulement (compter sans rien modifier)'
+        type: boolean
+        default: false
+
+jobs:
+  emplacements:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Rattacher les produits à tous les emplacements
+        env:
+          SHOPIFY_SHOP: ${{ secrets.SHOPIFY_SHOP }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          SIMULATION: ${{ inputs.simulation }}
+        run: node scripts/emplacements.mjs
