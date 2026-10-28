@@ -6,7 +6,8 @@
 //   SIMULATION=true  → compte seulement ce qui serait changé, sans rien modifier.
 
 const note = (m) => console.log(`::notice::${m}`);
-process.on('unhandledRejection', (e) => { console.log(`::error::${String(e?.message || e).replace(/\n/g, ' ')}`); process.exit(1); });
+const fail = (e) => { console.log(`::error::${String(e?.message || e).replace(/\n/g, ' ')}`); process.exit(1); };
+process.on('unhandledRejection', fail); process.on('uncaughtException', fail);
 const shop = process.env.SHOPIFY_SHOP;
 const version = process.env.SHOPIFY_API_VERSION || '2026-10';
 const SIMULATION = process.env.SIMULATION === 'true';
