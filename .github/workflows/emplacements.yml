@@ -22,7 +22,7 @@ jobs:
       - name: Rattacher les produits à tous les emplacements
         env:
           SHOPIFY_SHOP: ${{ secrets.SHOPIFY_SHOP }}
-          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
-          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.INVENTAIRE_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.INVENTAIRE_CLIENT_SECRET }}
           SIMULATION: ${{ inputs.simulation }}
         run: node scripts/emplacements.mjs
