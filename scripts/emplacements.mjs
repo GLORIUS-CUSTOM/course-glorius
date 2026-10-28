@@ -5,19 +5,22 @@
 //
 //   SIMULATION=true  → compte seulement ce qui serait changé, sans rien modifier.
 
+const note = (m) => console.log(`::notice::${m}`);
+process.on('unhandledRejection', (e) => { console.log(`::error::${String(e?.message || e).replace(/\n/g, ' ')}`); process.exit(1); });
 const shop = process.env.SHOPIFY_SHOP;
 const version = process.env.SHOPIFY_API_VERSION || '2026-10';
 const SIMULATION = process.env.SIMULATION === 'true';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+if (!shop || !process.env.SHOPIFY_CLIENT_ID || !process.env.SHOPIFY_CLIENT_SECRET) throw new Error(`Secret manquant : SHOPIFY_SHOP=${shop ? 'ok' : 'vide'}, INVENTAIRE_CLIENT_ID=${process.env.SHOPIFY_CLIENT_ID ? 'ok' : 'vide'}, INVENTAIRE_CLIENT_SECRET=${process.env.SHOPIFY_CLIENT_SECRET ? 'ok' : 'vide'}`);
 const tokRes = await fetch(`https://${shop}/admin/oauth/access_token`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   body: new URLSearchParams({ grant_type: 'client_credentials', client_id: process.env.SHOPIFY_CLIENT_ID, client_secret: process.env.SHOPIFY_CLIENT_SECRET }),
 });
-if (!tokRes.ok) throw new Error(`Jeton Shopify refusé (${tokRes.status}) : ${await tokRes.text()}`);
+if (!tokRes.ok) throw new Error(`Jeton Shopify refusé (${tokRes.status}) : ${(await tokRes.text()).slice(0, 300)}`);
 const { access_token, scope } = await tokRes.json();
-console.log('Accès accordés à l\'app :', scope);
+note(`Accès accordés à l'app : ${scope || '(aucun)'}`);
 
 async function gql(query, variables = {}) {
   for (let attempt = 0; attempt < 8; attempt++) {
@@ -57,7 +60,7 @@ do {
   if (total % 2500 < 250) console.log(`  ${total} variantes lues…`);
 } while (after);
 
-console.log(`Variantes : ${total} · à rattacher : ${todo.length}`);
+note(`Variantes : ${total} · à rattacher : ${todo.length}`);
 if (SIMULATION || !todo.length) { console.log(SIMULATION ? 'Simulation : rien n\'a été modifié.' : 'Tout est déjà rattaché.'); process.exit(0); }
 
 const BATCH = 25;
@@ -70,4 +73,4 @@ for (let i = 0; i < todo.length; i += BATCH) {
   for (const r of Object.values(d)) { if (r.userErrors?.length) { errors++; if (errors <= 5) console.log('  ', r.userErrors[0].message); } else done++; }
   if ((i / BATCH) % 40 === 0) console.log(`  ${Math.min(i + BATCH, todo.length)} / ${todo.length}`);
 }
-console.log(`Terminé : ${done} rattachées, ${errors} erreurs.`);
+note(`Terminé : ${done} rattachées, ${errors} erreurs.`);
