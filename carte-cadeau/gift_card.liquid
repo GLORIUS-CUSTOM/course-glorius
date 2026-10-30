@@ -155,7 +155,7 @@
       {%- if gift_card.message != blank -%}
         <blockquote class="gc-msg gc-reveal" style="--d:2.65s">
           «&nbsp;{{ gift_card.message | escape | newline_to_br }}&nbsp;»
-          {%- if gift_card.customer.first_name != blank -%}<cite>{{ gift_card.customer.first_name | escape }}</cite>{%- endif -%}
+          {%- if gift_card.recipient and gift_card.customer.first_name != blank -%}<cite>{{ gift_card.customer.first_name | escape }}</cite>{%- endif -%}
         </blockquote>
       {%- endif -%}
 
