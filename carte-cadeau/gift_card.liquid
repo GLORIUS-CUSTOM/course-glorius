@@ -37,7 +37,6 @@
       :root {
         --ink: #0b0b0c; --chalk: #f1efe9; --mist: #a19e96; --hair: rgba(241,239,233,.16);
         --gold: #e8c27a;
-        --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .55 0 0 0 0 .57 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
         --f-display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
         --f-body: 'Jost', 'Futura', 'Century Gothic', system-ui, sans-serif;
         --card-w: min(86vw, 440px);
@@ -47,48 +46,21 @@
       html, body { margin: 0; background: var(--ink); }
       body { color: var(--chalk); font: 300 16px/1.6 var(--f-body); min-height: 100vh; overflow-x: hidden; }
       .gc-bg { position: fixed; inset: 0; z-index: 0;
-        background: linear-gradient(180deg, rgba(11,11,12,.55), rgba(11,11,12,.92) 62%, var(--ink)),
-                    url({{ img }}atelier.jpg) center 30% / cover no-repeat;
-        filter: grayscale(1); }
+        background: linear-gradient(180deg, rgba(11,11,12,.45), rgba(11,11,12,.88) 55%, var(--ink)),
+                    url({{ img }}tissus.jpg) center top / cover no-repeat; }
       .gc { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; text-align: center;
         padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 64px max(20px, env(safe-area-inset-left)); }
       .gc-logo { width: 132px; height: auto; display: block; margin: 0 auto 8px; }
       .gc-eyebrow { font: 500 11px/1.4 var(--f-body); letter-spacing: .32em; text-transform: uppercase; color: var(--mist); margin: 0; }
       .gc-for { font: italic 400 clamp(26px, 6vw, 34px)/1.2 var(--f-display); margin: 6px 0 0; text-wrap: balance; }
 
-      /* ---------- enveloppe et carte ---------- */
-      .gc-stage { position: relative; width: var(--card-w); aspect-ratio: 856 / 540; margin: clamp(96px, 30vw, 130px) auto 44px; perspective: 1400px; }
-      .gc-card { position: absolute; inset: 0; z-index: 2; border-radius: 4.5% / 7%; overflow: hidden;
-        box-shadow: 0 24px 40px rgba(0,0,0,.6), 0 2px 4px rgba(0,0,0,.5);
-        animation: card-rise 1.5s cubic-bezier(.3,.1,.2,1) 1.05s both; }
+      /* ---------- carte ---------- */
+      .gc-stage { position: relative; width: var(--card-w); aspect-ratio: 856 / 540; margin: 40px auto 44px; }
+      .gc-card { position: absolute; inset: 0; border-radius: 4.5% / 7%; overflow: hidden;
+        box-shadow: 0 24px 40px rgba(0,0,0,.6), 0 2px 4px rgba(0,0,0,.5); }
       .gc-card img { width: 100%; height: 100%; display: block; }
-      .gc-env { position: absolute; left: -5%; right: -5%; top: 8%; height: 100%; border-radius: 6px;
-        animation: env-away .7s ease-in 2.15s both; }
-      .gc-env--back { z-index: 1; background: var(--grain), #050506; box-shadow: 0 24px 40px rgba(0,0,0,.6); }
-      .gc-env--front { z-index: 3; background: var(--grain), radial-gradient(90% 120% at 50% 100%, #141416, #0b0b0c 75%);
-        clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%); }
-      .gc-env--flap { z-index: 4; height: 62%; transform-origin: 50% 0; border-radius: 6px 6px 0 0;
-        background: var(--grain), radial-gradient(80% 100% at 50% 20%, #19191c, #0e0e10 80%); clip-path: polygon(0 0, 100% 0, 50% 100%);
-        animation: flap-open .65s cubic-bezier(.4,0,.2,1) .55s both, env-fade .5s ease-in 2.15s both; }
-      .gc-seal { position: absolute; left: 50%; top: calc(8% + 58%); z-index: 5; width: 58px; height: 58px; margin: -29px 0 0 -29px;
-        border-radius: 50%; display: grid; place-items: center;
-        background: var(--grain), #0a0a0b;
-        box-shadow: 0 4px 10px rgba(0,0,0,.7), inset 0 0 0 1px rgba(236,232,223,.35), inset 0 0 0 5px #0a0a0b, inset 0 0 0 6px rgba(236,232,223,.18);
-        font: 400 26px/1 var(--f-display); color: #ece8df; text-shadow: 0 1px 1px #000; animation: seal-off .35s ease-in .3s both; }
-      @keyframes seal-off { to { opacity: 0; transform: scale(.6); } }
-      @keyframes flap-open { 0% { transform: rotateX(0); z-index: 4; } 49% { z-index: 4; opacity: 1; } 51% { z-index: 0; } 100% { transform: rotateX(180deg); z-index: 0; opacity: .35; } }
-      @keyframes card-rise {
-        0%   { transform: translateY(12%) scale(.9); z-index: 2; }
-        40%  { z-index: 2; }
-        42%  { z-index: 6; }
-        48%  { transform: translateY(-38%) scale(.9); }
-        100% { transform: translateY(0) scale(1); z-index: 6; } }
-      @keyframes env-away { to { transform: translateY(45%); opacity: 0; visibility: hidden; } }
-      @keyframes env-fade { to { opacity: 0; visibility: hidden; } }
 
       /* ---------- détails ---------- */
-      .gc-reveal { animation: up .7s ease-out var(--d, 2.5s) both; }
-      @keyframes up { from { opacity: 0; transform: translateY(14px); } }
       .gc-amount { font: 400 clamp(56px, 16vw, 84px)/1 var(--f-display); margin: 0; font-variant-numeric: lining-nums; }
       .gc-sub { color: var(--mist); font-size: 14px; margin: 10px 0 0; }
       .gc-badge { display: inline-block; margin-top: 14px; padding: 4px 12px; border: 1px solid var(--hair); font: 500 11px/1.6 var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: var(--mist); }
@@ -110,10 +82,6 @@
       .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; opacity: 0; }
       .gc-foot { margin: 48px 0 0; font-size: 13px; color: var(--mist); }
       :focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
-      @media (prefers-reduced-motion: reduce) {
-        .gc-env, .gc-seal { display: none; }
-        .gc-card, .gc-reveal { animation: none; }
-      }
     </style>
   </head>
 
@@ -130,14 +98,10 @@
       {%- endif -%}
 
       <div class="gc-stage" aria-hidden="true">
-        <div class="gc-env gc-env--back"></div>
-        <div class="gc-env gc-env--front"></div>
-        <div class="gc-env gc-env--flap"></div>
-        <div class="gc-seal">G</div>
         <div class="gc-card"><img src="{{ img }}carte.png" alt="" width="856" height="540"></div>
       </div>
 
-      <section class="gc-reveal">
+      <section >
         <p class="gc-amount">{{ formatted_balance }}</p>
         {%- if gift_card.balance != gift_card.initial_value -%}
           <p class="gc-sub">Solde restant sur une carte de {{ gift_card.initial_value | money_without_trailing_zeros }}</p>
@@ -150,13 +114,13 @@
       </section>
 
       {%- if gift_card.message != blank -%}
-        <blockquote class="gc-msg gc-reveal" style="--d:2.65s">
+        <blockquote class="gc-msg">
           «&nbsp;{{ gift_card.message | escape | newline_to_br }}&nbsp;»
           {%- if gift_card.recipient and gift_card.customer.first_name != blank -%}<cite>{{ gift_card.customer.first_name | escape }}</cite>{%- endif -%}
         </blockquote>
       {%- endif -%}
 
-      <section class="gc-codebox gc-reveal" style="--d:2.8s">
+      <section class="gc-codebox">
         <p class="gc-eyebrow">Votre code</p>
         <p class="gc-code">{{ gift_card.code | format_code }}</p>
         <div class="gc-qr">
@@ -177,7 +141,7 @@
         </div>
       </section>
 
-      <p class="gc-foot gc-reveal" style="--d:2.95s">Valable dans nos boutiques {{ shop.name }} et en ligne.</p>
+      <p class="gc-foot">Valable dans nos boutiques {{ shop.name }} et en ligne.</p>
     </main>
   </body>
 </html>
