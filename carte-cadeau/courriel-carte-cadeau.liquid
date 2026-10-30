@@ -1,0 +1,141 @@
+{%- comment -%}
+  Courriel « Carte-cadeau créée » GLORIUS.
+  À coller dans : Paramètres > Notifications > Notifications aux clients > Carte-cadeau créée > Modifier le code
+  (remplacer tout le contenu du champ « Corps de l'e-mail (HTML) »).
+  Images hébergées sur glorius-custom.github.io/course-glorius/carte-cadeau/
+{%- endcomment -%}
+{%- assign img = 'https://glorius-custom.github.io/course-glorius/carte-cadeau/' -%}
+{%- assign montant = gift_card.initial_value | money_without_trailing_zeros -%}
+{%- assign destinataire = gift_card.recipient.nickname | default: gift_card.recipient.name -%}
+{%- assign offert_par = '' -%}
+{%- if gift_card.recipient and gift_card.customer.first_name != blank -%}
+  {%- assign offert_par = gift_card.customer.first_name -%}
+{%- endif -%}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="supported-color-schemes" content="dark light">
+  <title>Votre carte-cadeau {{ shop.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital@0;1&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; padding: 0; background: #0b0b0c; }
+    a { color: #f1efe9; }
+    .serif { font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, 'Times New Roman', serif; }
+    .sans { font-family: 'Jost', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif; }
+    @media (max-width: 620px) {
+      .wrap { width: 100% !important; }
+      .pad { padding-left: 24px !important; padding-right: 24px !important; }
+      .amount { font-size: 56px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:#0b0b0c;">
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    Vous avez reçu une carte-cadeau {{ shop.name }} de {{ montant | strip_html }}.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;
+  </div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0b0b0c" style="background:#0b0b0c;">
+    <tr>
+      <td align="center" style="padding:32px 0 48px;">
+        <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px;">
+
+          <tr>
+            <td align="center" class="pad" style="padding:8px 40px 28px;">
+              <a href="{{ shop.url }}" style="text-decoration:none;">
+                <img src="{{ img }}logo-glorius.png" width="140" alt="{{ shop.name }}" style="display:block; width:140px; height:auto; border:0;">
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" class="pad sans" style="padding:0 40px 10px; font-family:'Jost','Futura','Helvetica Neue',Arial,sans-serif; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#a19e96;">
+              Carte-cadeau
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="pad serif" style="padding:0 40px 30px; font-family:'Bodoni Moda','Didot','Bodoni 72',Georgia,serif; font-style:italic; font-size:30px; line-height:38px; color:#f1efe9;">
+              {%- if destinataire != blank -%}
+                {{ destinataire | escape }}, un cadeau vous attend.
+              {%- else -%}
+                Un cadeau fait sur mesure vous attend.
+              {%- endif -%}
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" style="padding:0;">
+              <a href="{{ gift_card.url }}" style="text-decoration:none;">
+                <img src="{{ img }}carte-glorius.gif" width="600" alt="Carte-cadeau {{ shop.name }}" style="display:block; width:100%; max-width:600px; height:auto; border:0;">
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" class="pad serif amount" style="padding:40px 40px 6px; font-family:'Bodoni Moda','Didot','Bodoni 72',Georgia,serif; font-size:68px; line-height:72px; color:#f1efe9;">
+              {{ montant }}
+            </td>
+          </tr>
+          {%- if offert_par != blank -%}
+          <tr>
+            <td align="center" class="pad sans" style="padding:0 40px 4px; font-family:'Jost','Futura','Helvetica Neue',Arial,sans-serif; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#a19e96;">
+              Offerte par {{ offert_par | escape }}
+            </td>
+          </tr>
+          {%- endif -%}
+
+          {%- if gift_card.message != blank -%}
+          <tr>
+            <td align="center" class="pad serif" style="padding:28px 56px 0; font-family:'Bodoni Moda','Didot','Bodoni 72',Georgia,serif; font-style:italic; font-size:20px; line-height:30px; color:#f1efe9;">
+              «&nbsp;{{ gift_card.message | escape | newline_to_br }}&nbsp;»
+            </td>
+          </tr>
+          {%- endif -%}
+
+          <tr>
+            <td align="center" class="pad" style="padding:36px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" bgcolor="#f1efe9" style="background:#f1efe9;">
+                    <a href="{{ gift_card.url }}" class="sans" style="display:inline-block; padding:16px 34px; font-family:'Jost','Futura','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:#0b0b0c; text-decoration:none;">Voir ma carte-cadeau</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {%- if gift_card.code != blank -%}
+          <tr>
+            <td align="center" class="pad sans" style="padding:26px 40px 0; font-family:'Jost','Futura','Helvetica Neue',Arial,sans-serif; font-size:14px; color:#a19e96;">
+              Votre code&nbsp;: <span style="color:#f1efe9; letter-spacing:2px;">{{ gift_card.code | format_code }}</span>
+            </td>
+          </tr>
+          {%- endif -%}
+
+          <tr>
+            <td align="center" class="pad sans" style="padding:18px 64px 0; font-family:'Jost','Futura','Helvetica Neue',Arial,sans-serif; font-size:14px; line-height:22px; color:#a19e96;">
+              Présentez votre carte en boutique, ou entrez le code au paiement en ligne.
+              {%- if gift_card.expires_on -%}<br>Valable jusqu'au {{ gift_card.expires_on | date: '%d/%m/%Y' }}.{%- endif -%}
+            </td>
+          </tr>
+
+          <tr>
+            <td class="pad" style="padding:44px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr><td style="border-top:1px solid #2a2a2c; font-size:0; line-height:0;">&nbsp;</td></tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="pad sans" style="padding:20px 40px 0; font-family:'Jost','Futura','Helvetica Neue',Arial,sans-serif; font-size:12px; line-height:20px; color:#6f6c66;">
+              {{ shop.name }} · <a href="{{ shop.url }}" style="color:#a19e96; text-decoration:underline;">Visiter la boutique</a>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
