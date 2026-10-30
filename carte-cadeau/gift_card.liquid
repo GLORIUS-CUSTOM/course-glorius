@@ -61,9 +61,6 @@
         box-shadow: 0 24px 40px rgba(0,0,0,.6), 0 2px 4px rgba(0,0,0,.5);
         animation: card-rise 1.5s cubic-bezier(.3,.1,.2,1) 1.05s both; }
       .gc-card img { width: 100%; height: 100%; display: block; }
-      .gc-card::after { content: ""; position: absolute; inset: -20% -60%;
-        background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.24) 50%, transparent 60%);
-        transform: translateX(-60%); animation: shine 1.1s ease-in-out 2.7s both; }
       .gc-env { position: absolute; left: -5%; right: -5%; top: 8%; height: 100%; border-radius: 6px;
         animation: env-away .7s ease-in 2.15s both; }
       .gc-env--back { z-index: 1; background: #0f0f11; box-shadow: 0 24px 40px rgba(0,0,0,.55); }
@@ -87,7 +84,6 @@
         100% { transform: translateY(0) scale(1); z-index: 6; } }
       @keyframes env-away { to { transform: translateY(45%); opacity: 0; visibility: hidden; } }
       @keyframes env-fade { to { opacity: 0; visibility: hidden; } }
-      @keyframes shine { to { transform: translateX(60%); } }
 
       /* ---------- détails ---------- */
       .gc-reveal { animation: up .7s ease-out var(--d, 2.5s) both; }
@@ -115,7 +111,7 @@
       :focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
       @media (prefers-reduced-motion: reduce) {
         .gc-env, .gc-seal { display: none; }
-        .gc-card, .gc-card::after, .gc-reveal { animation: none; }
+        .gc-card, .gc-reveal { animation: none; }
       }
     </style>
   </head>
