@@ -48,6 +48,10 @@
       .gc-bg { position: fixed; inset: 0; z-index: 0;
         background: linear-gradient(180deg, rgba(11,11,12,.45), rgba(11,11,12,.88) 55%, var(--ink)),
                     url({{ img }}tissus.jpg) center top / cover no-repeat; }
+      @media (max-width: 720px) {
+        .gc-bg { background: linear-gradient(180deg, var(--ink) 180px, rgba(11,11,12,.2) 380px, rgba(11,11,12,.4) 60%, rgba(11,11,12,.92) 95%),
+                             url({{ img }}tissus-mobile.jpg) center 175px / 100% auto no-repeat, var(--ink); }
+      }
       .gc { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; text-align: center;
         padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 64px max(20px, env(safe-area-inset-left)); }
       .gc-logo { width: 132px; height: auto; display: block; margin: 0 auto 8px; }
