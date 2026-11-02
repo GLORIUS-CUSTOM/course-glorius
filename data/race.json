@@ -1,15 +1,15 @@
 {
   "demo": false,
   "titre": "La Course GLORIUS",
-  "misAJour": "2026-10-26T21:27:26.708Z",
+  "misAJour": "2026-11-02T11:11:27.956Z",
   "saison": {
     "debut": "2026-11-01",
     "fin": "2027-10-31",
     "terminee": false,
     "prochaineCourse": null,
-    "semaine": 0,
+    "semaine": 1,
     "semainesTotal": 53,
-    "derniereSemaine": null
+    "derniereSemaine": "2026-10-26"
   },
   "compagniePct": null,
   "faits": {
@@ -30,7 +30,7 @@
       "couloir": 1,
       "position": 0,
       "positionPrec": 0,
-      "rang": null,
+      "rang": 1,
       "rangPrec": null
     },
     {
@@ -42,7 +42,7 @@
       "couloir": 2,
       "position": 0,
       "positionPrec": 0,
-      "rang": null,
+      "rang": 1,
       "rangPrec": null
     },
     {
@@ -54,7 +54,7 @@
       "couloir": 3,
       "position": 0,
       "positionPrec": 0,
-      "rang": null,
+      "rang": 1,
       "rangPrec": null
     },
     {
@@ -66,7 +66,7 @@
       "couloir": 4,
       "position": 0,
       "positionPrec": 0,
-      "rang": null,
+      "rang": 1,
       "rangPrec": null
     },
     {
@@ -78,7 +78,7 @@
       "couloir": 5,
       "position": 0,
       "positionPrec": 0,
-      "rang": null,
+      "rang": 1,
       "rangPrec": null
     }
   ]
