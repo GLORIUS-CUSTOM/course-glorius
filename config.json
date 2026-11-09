@@ -6,6 +6,7 @@
     "objectifCompagnie": 3000000
   },
   "afficherObjectifCompagniePourTous": false,
+  "reattributions": { "#1017": "vinny", "#1028": "vinny", "#1034": "vinny" },
   "vendeurs": [
     { "id": "pat",   "nom": "Pat",       "nomsPOS": ["Patrick Feio"],                          "icone": "icones/tortue.svg", "animal": "tortue",     "couleur": "#3d6b52" },
     { "id": "vinny", "nom": "Vinny",     "nomsPOS": ["vinny@glorius.ca User", "vinny@glorius.ca"], "icone": "icones/elephant.svg", "animal": "elephant",   "couleur": "#5d6876" },
