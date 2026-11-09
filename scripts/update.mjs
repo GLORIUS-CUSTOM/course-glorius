@@ -19,6 +19,9 @@ const ROOT = new URL('../', import.meta.url);
 const cfg = JSON.parse(await readFile(new URL('config.json', ROOT), 'utf8'));
 const DEMO = process.argv.includes('--demo');
 const ITERATIONS = 250000;
+// Commandes à attribuer à un autre vendeur que celui choisi au POS : { "#1017": "vinny" }
+const REATTR = Object.fromEntries(Object.entries(cfg.reattributions || {}).map(([c, id]) => [c.trim().replace(/^#?/, '#'), id]));
+for (const [c, id] of Object.entries(REATTR)) if (!cfg.vendeurs.some((v) => v.id === id)) throw new Error(`Réattribution ${c} : vendeur inconnu « ${id} »`);
 
 // ---------- dates ----------
 const iso = (d) => d.toISOString().slice(0, 10);
@@ -64,7 +67,9 @@ async function shopifyRows(sinceDate, untilDate) {
   if (!tokRes.ok) throw new Error(`Jeton Shopify refusé (${tokRes.status}) : ${await tokRes.text()}`);
   const { access_token } = await tokRes.json();
 
-  const q = `FROM sales SHOW net_sales, orders GROUP BY staff_member_name TIMESERIES week SINCE ${sinceDate} UNTIL ${untilDate}`;
+  // Avec des réattributions, on lit aussi le numéro de commande pour pouvoir les déplacer.
+  const parCommande = Object.keys(REATTR).length > 0;
+  const q = `FROM sales SHOW net_sales, orders GROUP BY staff_member_name${parCommande ? ', order_name' : ''} TIMESERIES week SINCE ${sinceDate} UNTIL ${untilDate}`;
   const res = await fetch(`https://${shop}/admin/api/${version}/graphql.json`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': access_token },
@@ -149,7 +154,8 @@ for (const row of rows) {
   if (wi === undefined || (!amount && !orders)) continue;
   totalCompagnie += amount;
   const name = (row.staff_member_name || '').trim();
-  const id = byName.get(name.toLowerCase());
+  const cmd = row.order_name ? String(row.order_name).trim().replace(/^#?/, '#') : null;
+  const id = (cmd && REATTR[cmd]) || byName.get(name.toLowerCase());
   if (!id) { nonAttribue[name || '(sans vendeur)'] = (nonAttribue[name || '(sans vendeur)'] || 0) + amount; continue; }
   stats[id].semaines[wi] += amount;
   stats[id].commandes += orders;
