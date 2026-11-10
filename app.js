@@ -60,7 +60,7 @@
     const s = race.saison, f = race.faits;
     if (s.terminee) {
       $('#t-semaine').textContent = 'Arrivée';
-      $('#t-semaine-sub').textContent = `Résultat final. Nouvelle course le ${dateFr(s.prochaineCourse)}`;
+      $('#t-semaine-sub').textContent = `Résultat final du mois. Nouvelle course le ${dateFr(s.prochaineCourse)}`;
     } else {
       $('#t-semaine').textContent = s.semaine ? `${s.semaine} / ${s.semainesTotal}` : 'Départ';
       $('#t-semaine-sub').textContent = s.derniereSemaine
@@ -86,24 +86,27 @@
   // ---------- piste ----------
   function renderTrack() {
     const ruler = $('#ruler'); ruler.replaceChildren();
-    const d0 = new Date(race.saison.debut + 'T12:00:00'), d1 = new Date(race.saison.fin + 'T12:00:00');
-    const span = d1 - d0;
-    for (let m = new Date(d0.getFullYear(), d0.getMonth() + 1, 1); m <= d1; m.setMonth(m.getMonth() + 1)) {
+    const d0 = new Date(race.saison.debut + 'T12:00:00');
+    const jours = race.saison.jours || 30;
+    // Repères : chaque lundi du mois.
+    for (let j = 1; j < jours; j++) {
+      const d = new Date(d0); d.setDate(d0.getDate() + j);
+      if (d.getDay() !== 1 || j > jours - 3) continue;
       const t = document.createElement('span');
-      t.style.left = ((m - d0) / span) * 100 + '%';
-      t.textContent = moisCourt(m);
+      t.style.left = (j / jours) * 100 + '%';
+      t.textContent = d.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' }).replace('.', '');
       ruler.append(t);
     }
-    const weeks = race.saison.semainesTotal;
+    // Ruban gradué en jours du mois.
     const tape = $('#tape'); tape.replaceChildren();
-    for (let w = 4; w < weeks; w += 4) {
+    for (let j = 5; j < jours; j += 5) {
       const n = document.createElement('span');
-      n.style.left = (w / weeks) * 100 + '%';
-      n.textContent = w;
+      n.style.left = (j / jours) * 100 + '%';
+      n.textContent = j;
       tape.append(n);
     }
-    const today = race.saison.semaine / weeks;
-    $('#track').style.setProperty('--weeks', weeks);
+    const today = race.saison.avancement ?? race.saison.semaine / race.saison.semainesTotal;
+    $('#track').style.setProperty('--weeks', jours);
     $('#track').style.setProperty('--today', today);
     $('#today-label').hidden = !race.saison.semaine;
 
@@ -280,7 +283,7 @@
     race = data.race; vault = data.vault;
     document.title = race.titre;
     $('#titre').textContent = race.titre;
-    $('#saison').textContent = `${race.saison.debut.slice(0, 4)}–${race.saison.fin.slice(0, 4)}`;
+    $('#saison').textContent = new Date(race.saison.debut + 'T12:00:00').toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' });
     const fillBulbs = () => document.querySelectorAll('.bulbs').forEach((row) => {
       const n = Math.max(12, Math.floor(row.clientWidth / 26));
       if (row.children.length === n) return;

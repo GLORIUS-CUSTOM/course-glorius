@@ -27,7 +27,7 @@
   <div class="wrap hero-inner">
     <img class="logo" src="assets/logo-glorius.svg" alt="GLORIUS Custom">
     <div class="hero-text">
-      <span class="eyebrow">Saison de ventes <span id="saison"></span></span>
+      <span class="eyebrow">Course de <span id="saison"></span></span>
       <h1 id="titre">La Course GLORIUS</h1>
       <span class="maj" id="maj"></span>
       <span class="demo" id="demo" hidden>Données de démonstration</span>
@@ -65,7 +65,7 @@
   <section class="mine" id="mine" hidden aria-label="Mes chiffres">
     <h2><span id="mine-token"></span>Mes chiffres</h2>
     <div class="stats">
-      <div class="stat big"><span class="k">Ventes de la saison</span><span class="v" id="m-total"></span></div>
+      <div class="stat big"><span class="k">Ventes du mois</span><span class="v" id="m-total"></span></div>
       <div class="stat"><span class="k">Cette semaine</span><span class="v" id="m-semaine"></span></div>
       <div class="stat"><span class="k">Meilleure semaine</span><span class="v" id="m-meilleure"></span></div>
       <div class="stat"><span class="k">Moyenne / semaine</span><span class="v" id="m-moyenne"></span></div>
@@ -82,13 +82,13 @@
   <section class="admin" id="admin" hidden aria-label="Tous les chiffres">
     <h2>Tous les chiffres</h2>
     <div class="stats">
-      <div class="stat big"><span class="k">Ventes GLORIUS, saison</span><span class="v" id="a-total"></span></div>
+      <div class="stat big"><span class="k">Ventes GLORIUS, mois</span><span class="v" id="a-total"></span></div>
       <div class="stat"><span class="k">Vers l’objectif</span><span class="v" id="a-pct"></span><div class="bar"><span id="a-bar"></span></div></div>
-      <div class="stat"><span class="k">Projection fin de saison</span><span class="v" id="a-proj"></span></div>
+      <div class="stat"><span class="k">Projection fin du mois</span><span class="v" id="a-proj"></span></div>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Vendeur</th><th>Saison</th><th>Semaine</th><th>Meilleure</th><th>Moyenne</th><th>Commandes</th><th>Panier</th></tr></thead>
+        <thead><tr><th>Vendeur</th><th>Mois</th><th>Semaine</th><th>Meilleure</th><th>Moyenne</th><th>Commandes</th><th>Panier</th></tr></thead>
         <tbody id="a-rows"></tbody>
       </table>
     </div>
@@ -108,7 +108,7 @@
       <ol class="lanes" id="lanes"></ol>
     </div>
     <div class="bulbs track-bulbs track-bulbs-bottom" aria-hidden="true"></div>
-    <p class="legend">Le ruban est gradué en semaines de saison. Le cheval en tête court au rythme du calendrier ; les autres sont placés selon leurs ventes par rapport à lui. Les chevaux avancent chaque lundi, selon les ventes nettes avant taxes de la semaine terminée.</p>
+    <p class="legend">La course dure un mois : le ruban est gradué en jours du mois. Le cheval en tête court au rythme du calendrier ; les autres sont placés selon leurs ventes par rapport à lui. Les chevaux avancent chaque lundi, selon les ventes nettes avant taxes de la semaine terminée. Le 1er du mois, on affiche le résultat final, puis une nouvelle course part le lendemain.</p>
   </section>
 
 </main>
