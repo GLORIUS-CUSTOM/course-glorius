@@ -30,26 +30,30 @@ const addDays = (s, n) => { const d = parse(s); d.setUTCDate(d.getUTCDate() + n)
 const mondayOf = (s) => { const d = parse(s); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return iso(d); };
 const todayToronto = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).format(new Date());
 
-// La saison repart à zéro chaque année à la date « debutAnnuel » (MM-JJ, début de l'exercice).
-// DATE_COURSE (AAAA-MM-JJ) permet de simuler une autre date.
-const { objectifCompagnie } = cfg.saison;
-const debutAnnuel = cfg.saison.debutAnnuel || '11-01';
+// La course dure un mois civil. Les chevaux avancent chaque lundi avec les ventes
+// jusqu'au dimanche ; le 1er du mois, on affiche le résultat final du mois précédent,
+// et la nouvelle course repart le lendemain. DATE_COURSE (AAAA-MM-JJ) simule une autre date.
+const { objectifCompagnie } = cfg.saison; // objectif annuel ; la course en utilise le douzième
+const objectifMois = objectifCompagnie / 12;
 const refDate = process.env.DATE_COURSE || (DEMO ? '2027-01-25' : todayToronto());
-const seasonOf = (d) => {
-  const yy = Number(d.slice(0, 4));
-  const deb = d >= `${yy}-${debutAnnuel}` ? `${yy}-${debutAnnuel}` : `${yy - 1}-${debutAnnuel}`;
-  return { debut: deb, fin: addDays(`${Number(deb.slice(0, 4)) + 1}-${debutAnnuel}`, -1) };
-};
-let { debut, fin } = seasonOf(refDate);
-// Tant que la première semaine de la nouvelle saison n'est pas terminée,
-// on garde affiché le résultat final de la saison précédente.
-let terminee = false;
-if (addDays(mondayOf(debut), 6) >= refDate) { ({ debut, fin } = seasonOf(addDays(debut, -1))); terminee = true; }
-// Avant la toute première saison, les animaux attendent à la barrière.
+const debutMois = (d) => d.slice(0, 8) + '01';
+const finMois = (d) => { const x = parse(debutMois(d)); x.setUTCMonth(x.getUTCMonth() + 1); x.setUTCDate(0); return iso(x); };
+const joursEntre = (a, b) => Math.round((parse(b) - parse(a)) / 86400000);
+let terminee = refDate.slice(8) === '01';
+let debut = debutMois(terminee ? addDays(refDate, -1) : refDate);
+let fin = finMois(debut);
+// Dernier jour compté : la veille du 1er (course terminée), sinon le dernier dimanche.
+let coupure = terminee ? fin : addDays(mondayOf(refDate), -1);
+if (coupure > fin) coupure = fin;
+// Avant la toute première course, les animaux attendent à la barrière.
 const premiere = cfg.saison.premiereSaison;
-if (premiere && debut < premiere) { ({ debut, fin } = seasonOf(premiere)); terminee = false; }
+if (premiere && debut < premiere) { debut = debutMois(premiere); fin = finMois(debut); terminee = false; coupure = addDays(debut, -1); }
+const joursMois = joursEntre(debut, fin) + 1;
 const allWeeks = [];
-for (let w = mondayOf(debut); w <= mondayOf(fin); w = addDays(w, 7)) allWeeks.push(w);
+for (let w = mondayOf(debut); w <= fin; w = addDays(w, 7)) allWeeks.push(w);
+const finSemaine = (w) => { const f = addDays(w, 6); return f > fin ? fin : f; };
+// Part du mois écoulée à la fin de la n-ième semaine (0 à 1).
+const avancementAt = (n) => (n ? (joursEntre(debut, finSemaine(allWeeks[n - 1])) + 1) / joursMois : 0);
 
 // ---------- Shopify ----------
 async function shopifyRows(sinceDate, untilDate) {
@@ -132,12 +136,12 @@ async function encrypt(code, salt, payload) {
 
 // ---------- calcul ----------
 const today = refDate;
-const done = allWeeks.filter((w) => addDays(w, 6) < today); // semaines terminées
+const done = allWeeks.filter((w) => finSemaine(w) <= coupure); // semaines terminées
 const k = done.length;
 
 let rows = [];
 if (k > 0) {
-  rows = DEMO ? demoRows(done) : await shopifyRows(debut, addDays(done[k - 1], 6));
+  rows = DEMO ? demoRows(done) : await shopifyRows(debut, finSemaine(done[k - 1]));
 }
 
 const byName = new Map();
@@ -167,7 +171,7 @@ const rankAt = (n) => {
   const ranks = {}; order.forEach((o, i) => { ranks[o.id] = i > 0 && o.t === order[i - 1].t ? ranks[order[i - 1].id] : i + 1; });
   return { ranks, max: order[0]?.t || 0, leader: order[0]?.t > 0 ? order[0].id : null };
 };
-const posAt = (id, n) => { const { max } = rankAt(n); return max > 0 ? (cumulAt(id, n) / max) * (n / allWeeks.length) : 0; };
+const posAt = (id, n) => { const { max } = rankAt(n); return max > 0 ? (cumulAt(id, n) / max) * avancementAt(n) : 0; };
 
 const now = rankAt(k);
 const prev = rankAt(Math.max(0, k - 1));
@@ -187,13 +191,14 @@ if (k > 1) cfg.vendeurs.forEach((v) => { const g = prev.ranks[v.id] - now.ranks[
 const positions = cfg.vendeurs.map((v) => posAt(v.id, k)).sort((a, b) => b - a);
 const photoFinish = k > 0 && positions.length > 1 && positions[0] > 0 && (positions[0] - positions[1]) / positions[0] < 0.03;
 
-const objectifPerso = objectifCompagnie / cfg.vendeurs.length;
+const objectifPerso = objectifMois / cfg.vendeurs.length;
 const race = {
   demo: DEMO,
   titre: cfg.titre,
   misAJour: new Date().toISOString(),
-  saison: { debut, fin, terminee, prochaineCourse: terminee ? addDays(fin, 1) : null, semaine: k, semainesTotal: allWeeks.length, derniereSemaine: k ? done[k - 1] : null },
-  compagniePct: cfg.afficherObjectifCompagniePourTous ? totalCompagnie / objectifCompagnie : null,
+  saison: { debut, fin, terminee, prochaineCourse: terminee ? addDays(refDate, 1) : null, semaine: k, semainesTotal: allWeeks.length,
+    derniereSemaine: k ? (done[k - 1] < debut ? debut : done[k - 1]) : null, jours: joursMois, avancement: avancementAt(k) },
+  compagniePct: cfg.afficherObjectifCompagniePourTous ? totalCompagnie / objectifMois : null,
   faits: { meneur: now.leader, serieTete: serie, sprint, remontee, remonteeRangs: gain, photoFinish },
   vendeurs: cfg.vendeurs.map((v, i) => ({
     id: v.id, nom: v.nom, icone: v.icone, animal: v.animal || null, couleur: v.couleur, couloir: i + 1,
@@ -213,15 +218,15 @@ const vendeurPayload = (v) => {
     role: 'vendeur', id: v.id, nom: v.nom, total, commandes: s.commandes,
     semaine: k ? s.semaines[k - 1] : 0, meilleure: Math.max(0, ...s.semaines),
     moyenne: k ? total / k : 0, panier: s.commandes ? total / s.commandes : 0,
-    objectifPerso, historique: s.semaines, semaines: done,
+    objectifPerso, historique: s.semaines, semaines: done.map((w) => (w < debut ? debut : w)),
   };
 };
 const adminPayload = {
   role: 'admin',
-  compagnie: { total: totalCompagnie, objectif: objectifCompagnie, projection: k ? (totalCompagnie / k) * allWeeks.length : 0 },
+  compagnie: { total: totalCompagnie, objectif: objectifMois, projection: k ? totalCompagnie / avancementAt(k) : 0 },
   vendeurs: cfg.vendeurs.map(vendeurPayload),
   nonAttribue: Object.entries(nonAttribue).map(([nom, total]) => ({ nom, total })),
-  semaines: done,
+  semaines: done.map((w) => (w < debut ? debut : w)),
 };
 
 const salt = webcrypto.getRandomValues(new Uint8Array(16));
@@ -237,5 +242,5 @@ await mkdir(new URL('data/', ROOT), { recursive: true });
 await writeFile(new URL('data/race.json', ROOT), JSON.stringify(race, null, 2));
 await writeFile(new URL('data/vault.json', ROOT), JSON.stringify({ salt: b64(salt), iterations: ITERATIONS, entries }, null, 2));
 
-console.log(`Semaines terminées : ${k}/${allWeeks.length} · ventes saison : ${totalCompagnie.toFixed(2)} $`);
+console.log(`Semaines terminées : ${k}/${allWeeks.length} · ventes du mois : ${totalCompagnie.toFixed(2)} $`);
 if (Object.keys(nonAttribue).length) console.log('Noms POS non reliés à un vendeur :', nonAttribue);
