@@ -1,15 +1,17 @@
 {
   "demo": false,
   "titre": "La Course GLORIUS",
-  "misAJour": "2026-11-09T11:10:59.587Z",
+  "misAJour": "2026-11-10T22:10:11.664Z",
   "saison": {
     "debut": "2026-11-01",
-    "fin": "2027-10-31",
+    "fin": "2026-11-30",
     "terminee": false,
     "prochaineCourse": null,
     "semaine": 2,
-    "semainesTotal": 53,
-    "derniereSemaine": "2026-11-02"
+    "semainesTotal": 6,
+    "derniereSemaine": "2026-11-02",
+    "jours": 30,
+    "avancement": 0.26666666666666666
   },
   "compagniePct": null,
   "faits": {
@@ -28,7 +30,7 @@
       "animal": "tortue",
       "couleur": "#3d6b52",
       "couloir": 1,
-      "position": 0.03773584905660377,
+      "position": 0.26666666666666666,
       "positionPrec": 0,
       "rang": 1,
       "rangPrec": 1
@@ -40,7 +42,7 @@
       "animal": "elephant",
       "couleur": "#5d6876",
       "couloir": 2,
-      "position": 0,
+      "position": 0.02287199480181936,
       "positionPrec": 0,
       "rang": 3,
       "rangPrec": 1
@@ -52,7 +54,7 @@
       "animal": "paresseux",
       "couleur": "#7a6248",
       "couloir": 3,
-      "position": 0.02567214682408327,
+      "position": 0.18141650422352176,
       "positionPrec": 0,
       "rang": 2,
       "rangPrec": 1
@@ -66,7 +68,7 @@
       "couloir": 4,
       "position": 0,
       "positionPrec": 0,
-      "rang": 3,
+      "rang": 4,
       "rangPrec": 1
     },
     {
@@ -78,7 +80,7 @@
       "couloir": 5,
       "position": 0,
       "positionPrec": 0,
-      "rang": 3,
+      "rang": 4,
       "rangPrec": 1
     }
   ]
