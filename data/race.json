@@ -1,25 +1,25 @@
 {
   "demo": false,
   "titre": "La Course GLORIUS",
-  "misAJour": "2026-11-10T22:10:11.664Z",
+  "misAJour": "2026-11-16T11:35:26.717Z",
   "saison": {
     "debut": "2026-11-01",
     "fin": "2026-11-30",
     "terminee": false,
     "prochaineCourse": null,
-    "semaine": 2,
+    "semaine": 3,
     "semainesTotal": 6,
-    "derniereSemaine": "2026-11-02",
+    "derniereSemaine": "2026-11-09",
     "jours": 30,
-    "avancement": 0.26666666666666666
+    "avancement": 0.5
   },
   "compagniePct": null,
   "faits": {
-    "meneur": "pat",
+    "meneur": "alec",
     "serieTete": 1,
-    "sprint": "pat",
-    "remontee": null,
-    "remonteeRangs": 0,
+    "sprint": "alec",
+    "remontee": "alec",
+    "remonteeRangs": 1,
     "photoFinish": false
   },
   "vendeurs": [
@@ -30,9 +30,9 @@
       "animal": "tortue",
       "couleur": "#3d6b52",
       "couloir": 1,
-      "position": 0.26666666666666666,
-      "positionPrec": 0,
-      "rang": 1,
+      "position": 0.4240230991337825,
+      "positionPrec": 0.26666666666666666,
+      "rang": 2,
       "rangPrec": 1
     },
     {
@@ -42,10 +42,10 @@
       "animal": "elephant",
       "couleur": "#5d6876",
       "couloir": 2,
-      "position": 0.02287199480181936,
-      "positionPrec": 0,
-      "rang": 3,
-      "rangPrec": 1
+      "position": 0.021174205967276226,
+      "positionPrec": 0.02287199480181936,
+      "rang": 4,
+      "rangPrec": 3
     },
     {
       "id": "alec",
@@ -54,10 +54,10 @@
       "animal": "paresseux",
       "couleur": "#7a6248",
       "couloir": 3,
-      "position": 0.18141650422352176,
-      "positionPrec": 0,
-      "rang": 2,
-      "rangPrec": 1
+      "position": 0.5,
+      "positionPrec": 0.18141650422352176,
+      "rang": 1,
+      "rangPrec": 2
     },
     {
       "id": "jf",
@@ -66,10 +66,10 @@
       "animal": "abeille",
       "couleur": "#b8902c",
       "couloir": 4,
-      "position": 0,
+      "position": 0.030317613089509143,
       "positionPrec": 0,
-      "rang": 4,
-      "rangPrec": 1
+      "rang": 3,
+      "rangPrec": 4
     },
     {
       "id": "julie",
@@ -80,8 +80,8 @@
       "couloir": 5,
       "position": 0,
       "positionPrec": 0,
-      "rang": 4,
-      "rangPrec": 1
+      "rang": 5,
+      "rangPrec": 4
     }
   ]
 }
